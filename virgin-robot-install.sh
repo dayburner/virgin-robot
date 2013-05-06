@@ -23,6 +23,5 @@ cd ..
 echo 'Cleaning up'
 rm wii.py
 rm rc.local
-echo 'Rebooting...............'
-reboot
+echo 'Install script complete'
 

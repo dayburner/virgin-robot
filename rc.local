@@ -12,10 +12,10 @@
 # By default this script does nothing.
 
 # Print the IP address
-sudo python wii.py&
 _IP=$(hostname -I) || true
 if [ "$_IP" ]; then
   printf "My IP address is %s\n" "$_IP"
 fi
+sudo python wii.py&
 
 exit 0

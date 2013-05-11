@@ -3,13 +3,35 @@
 # -----------------------
 # Import required Python libraries
 # -----------------------
+
+#lib to handle wii remote
 import cwiid
+#lib to handle timing
 import time
+#lib to handle serial
+import serial
+#lib to handle robot board
 from raspirobotboard import *
 
-rr = RaspiRobot()
-button_delay = 0.1
+#try to set up serial, if not there quit
+try:
+    ser = serial.Serial('/dev/ttyACM0', 9600)
+except RuntimeError:
+    # If serial fails, signal with strobing light
+    led_strobe_1()
+    quit()
 
+#init serial connection
+ser = serial.Serial('/dev/ttyACM0', 9600)
+#init robot board
+rr = RaspiRobot()
+#init button delay
+button_delay = 0.1
+#init headlight bool
+headlights = 0
+
+
+#function for flash
 def led_flash():
   rr.set_led1(1)
   time.sleep(0.5)
@@ -30,27 +52,27 @@ def led_flash():
   time.sleep(0.5)
   rr.set_led2(0)
 
+#function for strobe
 def led_strobe():
-  rr.set_led1(1)
-  rr.set_led2(1)
-  time.sleep(0.25)
-  rr.set_led1(0)
-  rr.set_led2(0)
-  time.sleep(0.25)
-  rr.set_led1(1)
-  rr.set_led2(1)
-  time.sleep(0.25)
-  rr.set_led1(0)
-  rr.set_led2(0)
-  time.sleep(0.25)
-  rr.set_led1(1)
-  rr.set_led2(1)
-  time.sleep(0.25)
-  rr.set_led1(0)
-  rr.set_led2(0)
-  time.sleep(0.25)
+  count = 0
+  while count < 4:
+      rr.set_led1(1)
+      rr.set_led2(1)
+      time.sleep(0.25)
+      rr.set_led1(0)
+      rr.set_led2(0)
+      time.sleep(0.25)
 
+#function for strobe 1
+def led_strobe_1():
+    count = 0
+    while count < 4:
+        rr.set_led2(1)
+        time.sleep(0.25)
+        rr.set_led2(0)
+        time.sleep(0.25)
 
+# Flash lights to signal pairing is ready
 led_flash()
 time.sleep(1)
 
@@ -59,13 +81,16 @@ time.sleep(1)
 try:
   wii=cwiid.Wiimote()
 except RuntimeError:
+    # If pairing fails, signal with strobing lights
     led_strobe()
     quit()
   
-
+#enable button reporting from wii remote
 wii.rpt_mode = cwiid.RPT_BTN
- 
+
+#runloop
 while True:
+
 
   buttons = wii.state['buttons']
 
@@ -97,15 +122,16 @@ while True:
     time.sleep(button_delay)  
     
   if (buttons & cwiid.BTN_1):
-    rr.set_oc1(1)
+    ser.write('a')
     time.sleep(button_delay)          
 
   if (buttons & cwiid.BTN_2):
-    rr.set_oc1(0)
+    ser.write('b')
     time.sleep(button_delay)          
 
   if (buttons & cwiid.BTN_A):
-    led_strobe()
+    headlights = (headlights + 1) % 2
+    rr.set_oc1(headlights)
     time.sleep(button_delay)          
 
   if (buttons & cwiid.BTN_B):
@@ -128,9 +154,9 @@ while True:
     time.sleep(button_delay)           
     
   if (buttons & cwiid.BTN_MINUS):
-    rr.left()
+    ser.write('b')
     time.sleep(button_delay)   
     
   if (buttons & cwiid.BTN_PLUS):
-    rr.right()
+    ser.write('a')
     time.sleep(button_delay)

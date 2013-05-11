@@ -21,8 +21,6 @@ except RuntimeError:
     led_strobe_1()
     quit()
 
-#init serial connection
-ser = serial.Serial('/dev/ttyACM0', 9600)
 #init robot board
 rr = RaspiRobot()
 #init button delay
@@ -132,7 +130,7 @@ while True:
   if (buttons & cwiid.BTN_A):
     headlights = (headlights + 1) % 2
     rr.set_oc1(headlights)
-    time.sleep(button_delay)          
+    time.sleep(1)
 
   if (buttons & cwiid.BTN_B):
     rr.stop()
@@ -154,9 +152,9 @@ while True:
     time.sleep(button_delay)           
     
   if (buttons & cwiid.BTN_MINUS):
-    ser.write('b')
+    rr.right()
     time.sleep(button_delay)   
     
   if (buttons & cwiid.BTN_PLUS):
-    ser.write('a')
+    rr.left()
     time.sleep(button_delay)

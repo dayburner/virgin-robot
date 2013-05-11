@@ -21,7 +21,7 @@ echo 'Upgrading packages...'
 apt-get upgrade
 echo 'Installing packages needed for robot...'
 apt-get install --no-install-recommends bluetooth
-apt-get install python-cwiid python-rpi.gpio python-serial arduino
+apt-get install python-cwiid python-rpi.gpio python-serial arduino avahi-daemon avahi-discover libnss-mdns
 echo 'Leaving virgin-robot-master dir...'
 cd ..
 echo 'Removing virgin-robot-master dir...'

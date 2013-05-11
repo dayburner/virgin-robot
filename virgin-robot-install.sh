@@ -13,7 +13,7 @@ echo 'Upgrading packages'
 apt-get upgrade
 echo 'Installing packages needed for robot'
 apt-get install --no-install-recommends bluetooth
-apt-get install python-cwiid python-rpi.gpio python-serial arduino 
+apt-get install python-cwiid python-rpi.gpio python-serial arduino avahi-daemon avahi-discover libnss-mdns
 echo 'Getting robot board files from github'
 wget https://github.com/simonmonk/raspirobotboard/archive/master.zip
 echo 'Unzip archive'

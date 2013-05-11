@@ -12,6 +12,8 @@ import time
 import serial
 #lib to handle robot board
 from raspirobotboard import *
+#lib to handle unix commands
+import subprocess
 
 #try to set up serial, if not there quit
 try:
@@ -70,6 +72,8 @@ def led_strobe_1():
         rr.set_led2(0)
         time.sleep(0.25)
 
+#talk
+subprocess.call(["ssh", "root@iphone.local", "say", "connect", "controller" "now"])
 # Flash lights to signal pairing is ready
 led_flash()
 time.sleep(1)
@@ -140,6 +144,7 @@ while True:
     time.sleep(button_delay)          
 
   if (buttons & cwiid.BTN_HOME):
+    subprocess.call(["ssh", "root@iphone.local", "say", "hello", "I", "am", "the", "greatest", "robot", "ever"])
     rr.right(0.3)
     rr.left(0.3)
     rr.right(0.3)

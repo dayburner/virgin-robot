@@ -9,19 +9,19 @@ import cwiid
 #lib to handle timing
 import time
 #lib to handle serial
-import serial
+#import serial
 #lib to handle robot board
 from raspirobotboard import *
 #lib to handle unix commands
 import subprocess
 
 #try to set up serial, if not there quit
-try:
-    ser = serial.Serial('/dev/ttyACM0', 9600)
-except RuntimeError:
+    #try:
+#ser = serial.Serial('/dev/ttyACM0', 9600)
+    #except RuntimeError:
     # If serial fails, signal with strobing light
-    led_strobe_1()
-    quit()
+    #led_strobe_1()
+#quit()
 
 #init robot board
 rr = RaspiRobot()
@@ -73,7 +73,11 @@ def led_strobe_1():
         time.sleep(0.25)
 
 #talk
-subprocess.call(["ssh", "root@iphone.local", "say", "connect", "controller" "now"])
+#subprocess.call(["ssh", "root@iphone.local", "say", "connect", "controller" "now"])
+
+
+
+
 # Flash lights to signal pairing is ready
 led_flash()
 time.sleep(1)
@@ -124,17 +128,17 @@ while True:
     time.sleep(button_delay)  
     
   if (buttons & cwiid.BTN_1):
-    ser.write('a')
+      #ser.write('a')
     time.sleep(button_delay)          
 
   if (buttons & cwiid.BTN_2):
-    ser.write('b')
+      #ser.write('b')
     time.sleep(button_delay)          
 
   if (buttons & cwiid.BTN_A):
     headlights = (headlights + 1) % 2
     rr.set_oc1(headlights)
-    time.sleep(1)
+    time.sleep(0.5)
 
   if (buttons & cwiid.BTN_B):
     rr.stop()
@@ -144,7 +148,6 @@ while True:
     time.sleep(button_delay)          
 
   if (buttons & cwiid.BTN_HOME):
-    subprocess.call(["ssh", "root@iphone.local", "say", "hello", "I", "am", "the", "greatest", "robot", "ever"])
     rr.right(0.3)
     rr.left(0.3)
     rr.right(0.3)

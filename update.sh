@@ -18,10 +18,10 @@ cp update.sh ~/update.sh
 echo 'Updating apt-get...'
 apt-get update
 echo 'Upgrading packages...'
-apt-get upgrade
+apt-get upgrade -y
 echo 'Installing packages needed for robot...'
-apt-get install --no-install-recommends bluetooth
-apt-get install python-cwiid python-rpi.gpio python-serial arduino avahi-daemon avahi-discover libnss-mdns
+apt-get install --no-install-recommends bluetooth -y
+apt-get install python-cwiid python-rpi.gpio python-serial arduino avahi-daemon avahi-discover libnss-mdns -y
 echo 'Leaving virgin-robot-master dir...'
 cd ..
 echo 'Removing virgin-robot-master dir...'
